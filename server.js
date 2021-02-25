@@ -22,12 +22,25 @@ app.get("/", (req, res) => {
 
 // define a POST route /signup
 app.post("/signup", (req, res) => {
-    console.log(req.body)
-    // use res.json() to send the given object back to the client as response
-    return res.json({message: "User signed up successfully"})
+    console.log("this is req.body", req.body)
+    // return res.json({ message: "User signed up successfully" })
+    
+    // create new user & place the new user details in req.body
+    const newUser = {
+        _id: Date.now().toString(),
+        username: "user4",
+        password: "pwd4"
+    }
+
+    // append it to our array of users
+    users.push(newUser)
+
+    // return that user object with res.json
+    res.json(newUser)
 })
 
 // create a GET route /users
 app.get("/users", (req, res) => {
     return res.json(users)
 })
+
