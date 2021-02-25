@@ -44,8 +44,8 @@ We wanna create a new user object. It should look like this:
 ```
 let user = {
     _id: "<a new unique ID>",
-    email: "<the email the user sent to us>",
-    password: "<the password the user sent to us>"
+    username: "<the username the frontend sent to us>",
+    password: "<the password the frontend sent to us>"
 }
 
 ```
