@@ -22,14 +22,14 @@ app.get("/", (req, res) => {
 
 // define a POST route /signup
 app.post("/signup", (req, res) => {
-    console.log("this is req.body", req.body)
+    console.log("this is /signup req.body", req.body)
     // return res.json({ message: "User signed up successfully" })
     
     // create new user & place the new user details in req.body
     const newUser = {
         _id: Date.now().toString(),
-        username: "user4",
-        password: "pwd4"
+        username: "user4", // doing this manually by now...
+        password: "pwd4" // doing this manually by now...
     }
 
     // append it to our array of users
@@ -44,3 +44,26 @@ app.get("/users", (req, res) => {
     return res.json(users)
 })
 
+// define a POST route /login
+app.post("/login", (req, res) => {
+    console.log(req.body)
+    // check if a user's given username & pwd exists in our array of users
+    if (!req.body.username || !req.body.password) {
+        return res.json({error: "User not found. Login failed!"})
+    }
+    // check if an user exists in our array of users
+    const foundUser = users.find((user) => {
+        if (
+            user.username === req.body.username &&
+            user.password === req.body.username
+        ) {
+            return user
+        }
+    })
+
+    foundUser
+        ?
+        res.json(foundUser)
+        :
+        res.json({ error: "User not found. Login failed!"})
+})
