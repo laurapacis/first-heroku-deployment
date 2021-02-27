@@ -1,7 +1,10 @@
 const express = require('express')
+const cors = require('cors')
 
 const app = express()
 const PORT = 5000
+
+app.use(cors())
 
 // parse incoming POST json data
 app.use(express.json())
@@ -46,16 +49,16 @@ app.get("/users", (req, res) => {
 
 // define a POST route /login
 app.post("/login", (req, res) => {
-    console.log(req.body)
+    console.log(req.body.username, req.body.password)
     // check if a user's given username & pwd exists in our array of users
     if (!req.body.username || !req.body.password) {
-        return res.json({error: "User not found. Login failed!"})
+        return res.json({error: "User not found. Login failed! 1232132"})
     }
     // check if an user exists in our array of users
     const foundUser = users.find((user) => {
         if (
-            user.username === req.body.username &&
-            user.password === req.body.username
+            user.username == req.body.username &&
+            user.password == req.body.password
         ) {
             return user
         }
@@ -65,5 +68,5 @@ app.post("/login", (req, res) => {
         ?
         res.json(foundUser)
         :
-        res.json({ error: "User not found. Login failed!"})
+        res.status(404).json({ error: "User not found. Try again!"})
 })
