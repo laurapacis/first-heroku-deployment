@@ -25,15 +25,18 @@ app.get("/", (req, res) => {
 
 // define a POST route /signup
 app.post("/signup", (req, res) => {
-    console.log("this is /signup req.body", req.body)
-    // return res.json({ message: "User signed up successfully" })
+    // console.log("this is /signup req.body", req.body)
+
+    if (!req.body.username || !req.body.password || !req.body.confirmPassword) {
+    return res.json({ error: "Must provide username and password" })
+    };
+
+    if (req.body.password !== req.body.confirmPassword) {
+    return res.json({ error: "Password do not match!" })
+    };
     
     // create new user & place the new user details in req.body
-    const newUser = {
-        _id: Date.now().toString(),
-        username: "user4", // doing this manually by now...
-        password: "pwd4" // doing this manually by now...
-    }
+    const newUser = {_id: Date.now().toString(), ...req.body}
 
     // append it to our array of users
     users.push(newUser)
@@ -52,7 +55,7 @@ app.post("/login", (req, res) => {
     console.log(req.body.username, req.body.password)
     // check if a user's given username & pwd exists in our array of users
     if (!req.body.username || !req.body.password) {
-        return res.json({error: "User not found. Login failed! 1232132"})
+        return res.json({error: "User not found. Login failed!"})
     }
     // check if an user exists in our array of users
     const foundUser = users.find((user) => {
@@ -68,5 +71,5 @@ app.post("/login", (req, res) => {
         ?
         res.json(foundUser)
         :
-        res.status(404).json({ error: "User not found. Try again!"})
+        res.status(404).json({ error: "Username or password incorrect"})
 })
