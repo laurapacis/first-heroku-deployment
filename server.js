@@ -2,7 +2,7 @@ const express = require('express')
 const cors = require('cors')
 
 const app = express()
-const PORT = 5000
+// const PORT = 5000
 
 app.use(cors())
 
@@ -15,6 +15,7 @@ let users = [
     { _id: "u3", username: "user3", password: "pw3"},
 ]
 
+const PORT = process.env.PORT || 5000 // use Heroku port if exists... or run on 5000 on local PC
 app.listen(PORT, () => {
     console.log("Backend Server has started");
 })

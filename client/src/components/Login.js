@@ -1,10 +1,38 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react';
+import NotificationContext from '../context/notificationContext';
 import { Link } from 'react-router-dom'
+import Notification from './Notification'
+import {nanoid} from 'nanoid'
 import axios from 'axios'
 
 export const Login = () => {
+  const notificationContext = useContext(NotificationContext);
+  console.log(notificationContext);
+  const { addNotification } = notificationContext
+
+
   // const history = useHistory()
+  // const [notifications, setNotifications] = useState([
+        
+  //   ])
+
+  // const addNotification = (notification) => {
+  //   notification.id = nanoid();
+  //   setNotifications([...notifications, notification]);
+  //   removeNotification(notification.id);
+    
+  //   }
   
+  // const removeNotification = (notification) => {
+  //   setTimeout(() => {
+  //     const filtered = notifications.filter((item) => {
+        
+  //       return item.id !== notification.id
+  //     });
+  //     setNotifications(filtered)
+      
+  //   } , 2000)
+  // }
   const [users, setUser] = useState({
     username: "",
     password: ""
@@ -19,11 +47,25 @@ export const Login = () => {
     const config = {
       headers: {"Content-Type": "application/json"}
     }
+
     try {
-      const res = await axios.post('http://localhost:5000/login', users, config);
-      console.log(res.data, 1321321321);
+      if (users.password.length < 2) {
+        // addNotification({ type: "red", msg: "password is too short "})
+        addNotification("password is to short  ", "red")
+      }
+      else if (users.username.length === 0) {
+        // addNotification({ type: "orange", msg: "Username is empty"})
+           addNotification("userName is empty   ", "red")
+      }
+      else {
+        const response = await axios.post('http://localhost:5000/login', users, config);
+        console.log(response.data, 1321321321);
+          // addNotification({ type: "green", msg: `you are logged in welcome ${response.data.username }`})
+           addNotification( `you are logged in welcome ${response.data.username }`, "green")
+      }
+      
     } catch (error) {
-      console.log(error.res.data.error);
+      console.log(error.response.data.error);
     }
   }
 
@@ -53,10 +95,13 @@ export const Login = () => {
               onChange={changeHandler}
             />
           </div>
+          
           <button type="submit" className="ui button">Submit</button>
 
         </form>
+      
       </div>
+      {/* <button onClick={()=> addNotification({  type:"red", msg:"Hello world"})}>add new notification </button> */}
       <div>
         Don't have an account? <Link to="/signup">Sign up</Link>
       </div>

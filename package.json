@@ -12,6 +12,9 @@
   "scripts": {
     "start": "node server.js"
   },
+  "engines": {
+    "node": "v15.9.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
